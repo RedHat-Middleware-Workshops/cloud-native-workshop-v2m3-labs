@@ -52,6 +52,15 @@ spec:
       autoscaleEnabled: false
       # increase random sampling rate for development/testing
       traceSampling: 100.0
+      telemetry:
+        # constrain resources for use in smaller environments
+        resources:
+          requests:
+            cpu: 500m
+            memory: 2G
+          limits:
+            cpu: 500m
+            memory: 3G
 
     kiali:
       # change to false to disable kiali
