@@ -67,8 +67,9 @@ spec:
 
       # to use oauth, remove the following 'dashboard' section
       # create a secret for accessing kiali dashboard with the following credentials
-      auth:
-        strategy: openshift
+      dashboard:
+        user: admin
+        passphrase: admin
 
     tracing:
       # change to false to disable tracing (i.e. jaeger)
