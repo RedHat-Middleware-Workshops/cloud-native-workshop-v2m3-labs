@@ -11,6 +11,9 @@ spec:
     global:
       multitenant: false
       proxy:
+        # for iptables based systems
+        proxy_init:
+          image: maistra/proxy-init-centos7
         # constrain resources for use in smaller environments
         resources:
           requests:
