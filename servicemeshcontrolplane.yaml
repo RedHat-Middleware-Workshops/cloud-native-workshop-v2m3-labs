@@ -25,13 +25,23 @@ spec:
       hub: registry.redhat.io/openshift-istio-tech-preview
       tag: 0.11.1
       # the following lines enable tls across the control and data planes
-      controlPlaneSecurityEnabled: true
+      controlPlaneSecurityEnabled: false
       mtls:
         enabled: true
       disablePolicyChecks: false
       policyCheckFailOpen: false
       outboundTrafficPolicy:
         mode: REGISTRY_ONLY # defaults to ALLOW_ANY
+      # its either * or . - in case we can test all use cases, lets start with . in our dev env only
+      # this will set the following in the config map: 
+      # defaultServiceExportTo:
+      #   - "."
+      # defaultVirtualServiceExportTo:
+      #   - "."
+      # defaultDestinationRuleExportTo:
+      #   - "."
+      defaultConfigVisibilitySettings:
+        - "*" # bookinfo didn't even work for me without it (even when I exported the GW and VS)
       proxy:
         accessLogFile: /dev/stdout # in envs higher than test this should be empty
         accessLogEncoding: TEXT
@@ -55,17 +65,13 @@ spec:
           limits:
             cpu: 500m
             memory: 128Mi
-        autoscaleEnabled: true
-        autoscaleMin: 3
-        autoscaleMax: 5
+        autoscaleEnabled: false
         # sds:
         #   enabled: true
         #   image: docker.io/istio/node-agent-k8s:1.1.9
       istio-ingressgateway:
-        autoscaleEnabled: true
-        autoscaleMin: 3
-        autoscaleMax: 5
-        ior_enabled: false
+        autoscaleEnabled: false
+        ior_enabled: true
         resources:
           requests:
             cpu: 100m
@@ -78,9 +84,7 @@ spec:
         #   image: docker.io/istio/node-agent-k8s:1.1.9
     mixer:
       policy:
-        autoscaleEnabled: true
-        autoscaleMin: 3
-        autoscaleMax: 5
+        autoscaleEnabled: false
         resources:
           requests:
             cpu: 100m
@@ -89,9 +93,7 @@ spec:
             cpu: 500m
             memory: 128Mi
       telemetry:
-        autoscaleEnabled: true
-        autoscaleMin: 3
-        autoscaleMax: 5
+        autoscaleEnabled: false
         resources:
           requests:
             cpu: 100m
@@ -100,10 +102,8 @@ spec:
             cpu: 500m
             memory: 4G
     pilot:
-      autoscaleEnabled: true
+      autoscaleEnabled: false
       traceSampling: 100.0
-      autoscaleMin: 3
-      autoscaleMax: 5
       resources:
           requests:
             cpu: 100m
