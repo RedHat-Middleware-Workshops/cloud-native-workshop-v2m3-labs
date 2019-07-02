@@ -8,12 +8,16 @@ spec:
   # default values (i.e. no values will be specified for that element, not even
   # the defaults baked into the chart values.yaml).
   istio:
+    multitenant: false
+    launcher:
+      enabled: false
     global:
-      multitenant: false
+      # force to use rhel7 based proxy-init container
+      proxy_init:
+        image: proxy-init
+      hub: registry.redhat.io/openshift-istio-tech-preview
+      tag: 0.11.1
       proxy:
-        # for iptables based systems
-        proxy_init:
-          image: maistra/proxy-init-centos7:0.11.0
         # constrain resources for use in smaller environments
         resources:
           requests:
@@ -67,15 +71,13 @@ spec:
     kiali:
       # change to false to disable kiali
       enabled: true
-
-      # to use oauth, remove the following 'dashboard' section
-      # create a secret for accessing kiali dashboard with the following credentials
-      dashboard:
-        user: admin
-        passphrase: admin
+      tag: 0.20.0
 
     tracing:
       # change to false to disable tracing (i.e. jaeger)
       enabled: true
+      hub: distributed-tracing-tech-preview
+      tag: 1.11
+      
   threescale:
     enabled: false
