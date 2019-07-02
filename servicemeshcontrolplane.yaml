@@ -32,16 +32,6 @@ spec:
       policyCheckFailOpen: false
       outboundTrafficPolicy:
         mode: REGISTRY_ONLY # defaults to ALLOW_ANY
-      # its either * or . - in case we can test all use cases, lets start with . in our dev env only
-      # this will set the following in the config map: 
-      # defaultServiceExportTo:
-      #   - "."
-      # defaultVirtualServiceExportTo:
-      #   - "."
-      # defaultDestinationRuleExportTo:
-      #   - "."
-      defaultConfigVisibilitySettings:
-        - "."
       proxy:
         accessLogFile: /dev/stdout # in envs higher than test this should be empty
         accessLogEncoding: TEXT
