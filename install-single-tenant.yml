@@ -78,6 +78,5 @@ spec:
       enabled: true
       hub: distributed-tracing-tech-preview
       tag: 1.11
-      
   threescale:
     enabled: false
