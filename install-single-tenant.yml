@@ -13,7 +13,7 @@ spec:
       proxy:
         # for iptables based systems
         proxy_init:
-          image: maistra/proxy-init-centos7
+          image: maistra/proxy-init-centos7:0.11.0
         # constrain resources for use in smaller environments
         resources:
           requests:
