@@ -27,8 +27,8 @@ spec:
       # the following lines enable tls across the control and data planes
       controlPlaneSecurityEnabled: false
       mtls:
-        enabled: true
-      disablePolicyChecks: false
+        enabled: false
+      disablePolicyChecks: true
       policyCheckFailOpen: false
       outboundTrafficPolicy:
         mode: REGISTRY_ONLY # defaults to ALLOW_ANY
