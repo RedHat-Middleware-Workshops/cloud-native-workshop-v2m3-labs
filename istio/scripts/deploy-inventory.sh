@@ -4,7 +4,7 @@ USERXX=$1
 
 if [ -z $USERXX ]
   then
-    echo "Usage: Input your username like cloud-native-app-deploy.sh user1"
+    echo "Usage: Input your username like deploy-inventory.sh user1"
     exit;
 fi
 

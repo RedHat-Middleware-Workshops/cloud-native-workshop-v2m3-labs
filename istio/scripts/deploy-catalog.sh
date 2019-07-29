@@ -4,7 +4,7 @@ USERXX=$1
 
 if [ -z $USERXX ]
   then
-    echo "Usage: Input your username like cloud-native-app-deploy.sh user1"
+    echo "Usage: Input your username like deploy-catalog.sh user1"
     exit;
 fi
 
@@ -21,7 +21,7 @@ cd cloud-native-workshop-v2m3-labs/catalog/
 oc new-app -e POSTGRESQL_USER=catalog \
              -e POSTGRESQL_PASSWORD=mysecretpassword \
              -e POSTGRESQL_DATABASE=catalog \
-             openshift/postgresql:latest \
+             openshift/postgresql:9.4 \
              --name=catalog-database
              
 mvn package fabric8:deploy -Popenshift -DskipTests
