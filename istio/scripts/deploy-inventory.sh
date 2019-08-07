@@ -14,7 +14,7 @@ echo Deploy Inveoc projntory service........
 
 oc project $USERXX-inventory
 
-cd cloud-native-workshop-v2m3-labs/inventory/
+cd /projects/cloud-native-workshop-v2m3-labs/inventory/
 
 mvn clean package -DskipTests
 
