@@ -16,7 +16,7 @@ oc project $USERXX-inventory
 
 cd /projects/cloud-native-workshop-v2m3-labs/inventory/
 
-mvn clean package -DskipTests
+mvn clean package -DskipTests -Dquarkus.profile=prod
 
 oc new-app -e POSTGRESQL_USER=inventory \
   -e POSTGRESQL_PASSWORD=mysecretpassword \
