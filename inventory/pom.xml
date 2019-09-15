@@ -8,7 +8,7 @@
   <properties>
     <surefire-plugin.version>2.22.1</surefire-plugin.version>
     <docker-plugin.version>0.28.0</docker-plugin.version>
-    <quarkus.version>0.21.1</quarkus.version>
+    <quarkus.version>0.21.2</quarkus.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <compiler-plugin.version>3.8.0</compiler-plugin.version>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -82,6 +82,10 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <uberJar>true</uberJar>
+          <ignoredEntries>META-INF/BC2048KE.SF,META-INF/BC1024KE.SF,META-INF/BC2048KE.DSA,META-INF/BC1024KE.DSA</ignoredEntries>
+        </configuration>
       </plugin>
     </plugins>
   </build>
