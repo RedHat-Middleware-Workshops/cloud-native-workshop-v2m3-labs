@@ -17,8 +17,6 @@ oc project $USERXX-catalog
 oc delete policy/auth-policy
 
 oc patch dc/catalog-database --type=json -p='[{"op":"remove", "path": "/spec/template/metadata/annotations"}]'
-
-sed -i '/sidecar/d' /projects/cloud-native-workshop-v2m3-labs/catalog/src/main/fabric8/catalog-deployment.yml
-sed -i '/annotations/d' /projects/cloud-native-workshop-v2m3-labs/catalog/src/main/fabric8/catalog-deployment.yml
+oc patch dc/catalog-springboot --type=json -p='[{"op":"remove", "path": "/spec/template/metadata/annotations"}]'
 
 echo Complete to clean up.........

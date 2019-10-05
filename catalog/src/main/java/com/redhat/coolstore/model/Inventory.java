@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public class Inventory implements Serializable {
 
-    private int id;
+    private static final long serialVersionUID = 7131670354907280071L;
+
     private String itemId;
     private String location;
     private int quantity;
@@ -13,8 +14,7 @@ public class Inventory implements Serializable {
     public Inventory() {
     }
 
-    public Inventory(int id, String itemId, String location, int quantity, String link) {
-        this.id = id;
+    public Inventory(String itemId, String location, int quantity, String link) {
         this.itemId = itemId;
         this.location = location;
         this.quantity = quantity;
@@ -24,14 +24,6 @@ public class Inventory implements Serializable {
     public Inventory(String itemId, int quantity) {
         this.itemId = itemId;
         this.quantity = quantity;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getItemId() {
@@ -69,7 +61,6 @@ public class Inventory implements Serializable {
     @Override
     public String toString() {
         return "Inventory{" +
-                "id='" + id + '\'' +
                 "itemId='" + itemId + '\'' +
                 ", location='" + location + '\'' +
                 ", quantity=" + quantity +

@@ -1,17 +1,16 @@
 package com.redhat.coolstore.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
-import com.redhat.coolstore.model.Product;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.redhat.coolstore.model.Product;
 
 
 @RunWith(SpringRunner.class)
@@ -30,8 +29,9 @@ public class ProductRepositoryTest {
         assertThat(product.getName()).as("Verify product name").isEqualTo("Pebble Smart Watch");
         assertThat(product.getQuantity()).as("Quantity should be ZERO").isEqualTo(0);
     }
+
     //TODO: Insert test_readAll here
-    @Test
+     @Test
     public void test_readAll() {
         List<Product> productList = repository.readAll();
         assertThat(productList).isNotNull();

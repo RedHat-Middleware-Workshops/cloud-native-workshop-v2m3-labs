@@ -16,10 +16,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static io.specto.hoverfly.junit.dsl.HttpBodyConverter.json;
 import static io.specto.hoverfly.junit.dsl.ResponseCreators.success;
+import static io.specto.hoverfly.junit.dsl.ResponseCreators.serverError;
 import static io.specto.hoverfly.junit.dsl.matchers.HoverflyMatchers.startsWith;
 import static org.assertj.core.api.Assertions.assertThat;
 import static io.specto.hoverfly.junit.core.SimulationSource.dsl;
@@ -32,15 +34,14 @@ public class CatalogEndpointTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-//TODO: Add ClassRule for HoverFly Inventory simulation
+    //TODO: Add ClassRule for HoverFly Inventory simulation
     @ClassRule
     public static HoverflyRule hoverflyRule = HoverflyRule.inSimulationMode(dsl(
             service("inventory:8080")
     //                    .andDelay(2500, TimeUnit.MILLISECONDS).forMethod("GET")
                     .get(startsWith("/services/inventory"))
     //                    .willReturn(serverError())
-                   // .willReturn(success(json(new Inventory("9999",9999))))
-                   .willReturn(success("[{\"itemId\":\"329199\",\"quantity\":9999}]", "application/json"))
+                    .willReturn(success("[{\"itemId\":\"329199\",\"quantity\":9999}]", "application/json"))
 
     ));
 
@@ -52,7 +53,7 @@ public class CatalogEndpointTest {
         assertThat(response.getBody())
                 .returns("329199",Product::getItemId)
                 .returns("Forge Laptop Sticker",Product::getName)
-//TODO: Add check for Quantity
+    //TODO: Add check for Quantity
                 .returns(9999,Product::getQuantity)
                 .returns(8.50,Product::getPrice);
     }
@@ -76,7 +77,7 @@ public class CatalogEndpointTest {
         assertThat(fedora)
                 .returns("329299",Product::getItemId)
                 .returns("Red Fedora", Product::getName)
-//TODO: Add check for Quantity
+    //TODO: Add check for Quantity
                 .returns(9999,Product::getQuantity)
                 .returns(34.99,Product::getPrice);
     }
