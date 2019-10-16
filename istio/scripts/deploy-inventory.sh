@@ -16,7 +16,7 @@ oc project $USERXX-inventory
 
 cd /projects/cloud-native-workshop-v2m3-labs/inventory/
 
-mvn clean package -DskipTests -Dquarkus.profile=prod
+mvn clean package -DskipTests
 
 oc new-app -e POSTGRESQL_USER=inventory \
   -e POSTGRESQL_PASSWORD=mysecretpassword \
@@ -29,6 +29,6 @@ rm -rf target/binary && mkdir -p target/binary && cp -r target/*runner.jar targe
 
 oc start-build inventory-quarkus --from-dir=target/binary --follow
 
-oc new-app inventory-quarkus -e QUARKUS_DATASOURCE_URL=jdbc:postgresql://inventory-database:5432/inventory
+oc new-app inventory-quarkus -e QUARKUS_PROFILE=prod
 
 oc expose service inventory-quarkus
