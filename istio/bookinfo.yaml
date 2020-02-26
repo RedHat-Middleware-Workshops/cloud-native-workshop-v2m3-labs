@@ -13,6 +13,20 @@
 #   limitations under the License.
 
 ##################################################################################################
+# This file defines the services, service accounts, and deployments for the Bookinfo sample.
+#
+# To apply all 4 Bookinfo services, their corresponding service accounts, and deployments:
+#
+#   kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+#
+# Alternatively, you can deploy any resource separately:
+#
+#   kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml -l service=reviews # reviews Service
+#   kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml -l account=reviews # reviews ServiceAccount
+#   kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml -l app=reviews,version=v3 # reviews-v3 Deployment
+##################################################################################################
+
+##################################################################################################
 # Details service
 ##################################################################################################
 apiVersion: v1
@@ -29,7 +43,14 @@ spec:
   selector:
     app: details
 ---
-apiVersion: extensions/v1beta1
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bookinfo-details
+  labels:
+    account: details
+---
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: details-v1
@@ -38,6 +59,10 @@ metadata:
     version: v1
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: details
+      version: v1
   template:
     metadata:
       annotations:
@@ -46,9 +71,10 @@ spec:
         app: details
         version: v1
     spec:
+      serviceAccountName: bookinfo-details
       containers:
       - name: details
-        image: istio/examples-bookinfo-details-v1:1.13.0
+        image: docker.io/istio/examples-bookinfo-details-v1:1.15.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
@@ -70,7 +96,14 @@ spec:
   selector:
     app: ratings
 ---
-apiVersion: extensions/v1beta1
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bookinfo-ratings
+  labels:
+    account: ratings
+---
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ratings-v1
@@ -79,6 +112,10 @@ metadata:
     version: v1
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: ratings
+      version: v1
   template:
     metadata:
       annotations:
@@ -87,9 +124,10 @@ spec:
         app: ratings
         version: v1
     spec:
+      serviceAccountName: bookinfo-ratings
       containers:
       - name: ratings
-        image: istio/examples-bookinfo-ratings-v1:1.13.0
+        image: docker.io/istio/examples-bookinfo-ratings-v1:1.15.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
@@ -111,7 +149,14 @@ spec:
   selector:
     app: reviews
 ---
-apiVersion: extensions/v1beta1
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bookinfo-reviews
+  labels:
+    account: reviews
+---
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reviews-v1
@@ -120,6 +165,10 @@ metadata:
     version: v1
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: reviews
+      version: v1
   template:
     metadata:
       annotations:
@@ -128,14 +177,15 @@ spec:
         app: reviews
         version: v1
     spec:
+      serviceAccountName: bookinfo-reviews
       containers:
       - name: reviews
-        image: istio/examples-bookinfo-reviews-v1:1.13.0
+        image: docker.io/istio/examples-bookinfo-reviews-v1:1.15.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reviews-v2
@@ -144,6 +194,10 @@ metadata:
     version: v2
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: reviews
+      version: v2
   template:
     metadata:
       annotations:
@@ -152,14 +206,15 @@ spec:
         app: reviews
         version: v2
     spec:
+      serviceAccountName: bookinfo-reviews
       containers:
       - name: reviews
-        image: istio/examples-bookinfo-reviews-v2:1.13.0
+        image: docker.io/istio/examples-bookinfo-reviews-v2:1.15.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reviews-v3
@@ -168,6 +223,10 @@ metadata:
     version: v3
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: reviews
+      version: v3
   template:
     metadata:
       annotations:
@@ -176,9 +235,10 @@ spec:
         app: reviews
         version: v3
     spec:
+      serviceAccountName: bookinfo-reviews
       containers:
       - name: reviews
-        image: istio/examples-bookinfo-reviews-v3:1.13.0
+        image: docker.io/istio/examples-bookinfo-reviews-v3:1.15.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
@@ -200,7 +260,14 @@ spec:
   selector:
     app: productpage
 ---
-apiVersion: extensions/v1beta1
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bookinfo-productpage
+  labels:
+    account: productpage
+---
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: productpage-v1
@@ -209,6 +276,10 @@ metadata:
     version: v1
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: productpage
+      version: v1
   template:
     metadata:
       annotations:
@@ -217,9 +288,10 @@ spec:
         app: productpage
         version: v1
     spec:
+      serviceAccountName: bookinfo-productpage
       containers:
       - name: productpage
-        image: istio/examples-bookinfo-productpage-v1:1.13.0
+        image: docker.io/istio/examples-bookinfo-productpage-v1:1.15.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
