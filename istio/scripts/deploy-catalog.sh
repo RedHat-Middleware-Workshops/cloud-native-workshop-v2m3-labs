@@ -45,10 +45,3 @@ fi
 
 oc start-build catalog-springboot --from-file=target/catalog-1.0.0-SNAPSHOT.jar --follow
 oc new-app catalog-springboot
-oc expose service catalog-springboot
-
-clear
-echo "Done! Verify by accessing in your browser:"
-echo
-echo "http://$(oc get route catalog-springboot -o=go-template --template='{{ .spec.host }}')"
-echo

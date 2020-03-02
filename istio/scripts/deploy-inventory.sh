@@ -34,10 +34,3 @@ fi
 rm -rf target/binary && mkdir -p target/binary && cp -r target/*runner.jar target/lib target/binary
 oc start-build inventory-quarkus --from-dir=target/binary --follow
 oc new-app inventory-quarkus -e QUARKUS_PROFILE=prod
-oc expose service inventory-quarkus
-
-clear
-echo "Done! Verify by accessing in your browser:"
-echo
-echo "http://$(oc get route inventory-quarkus -o=go-template --template='{{ .spec.host }}')"
-echo

@@ -13,28 +13,15 @@ oc login
 oc new-project demo
 ```
 
-1. This demo requires a PostgreSQL database. Create one by using the following command:
+Execute the following command:
 
 ```
-oc new-app -e POSTGRESQL_USER=catalog \
-             -e POSTGRESQL_PASSWORD=mysecretpassword \
-             -e POSTGRESQL_DATABASE=catalog \
-             openshift/postgresql:latest \
-             --name=catalog-database
-```
-> **NOTE:** If you change the username and password you also need to update `src/main/fabric8/credential-secret.yml`.
+deploy-catalog.sh
 
-> **NOTE:** If you change the database or application name app you also need update `src/main/resources/application.properties` as well.
-
-2. Use the Fabric8 Maven Plugin to launch the S2I process on the OpenShift Online machine & start the pod.
-
-```
-mvn clean fabric8:deploy -Popenshift -DskipTests
+deploy-inventory.sh
 ```
 
-This will build and deploy the microservice along with a Postgres database.
-
-3. To test the service using curl:
+To test the service using curl:
 
 ```
 curl http://catalog-<project>.<domain>/api/catalog
