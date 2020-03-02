@@ -134,6 +134,12 @@
             <version>3.8.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+          <groupId>io.specto</groupId>
+          <artifactId>hoverfly-java</artifactId>
+          <version>0.12.2</version>
+          <scope>test</scope>
+      </dependency>
     </dependencies>
     <build>
         <pluginManagement>
