@@ -14,9 +14,7 @@ echo Deploy Inventory service........
 
 oc project $USERXX-inventory
 
-cd /projects/cloud-native-workshop-v2m3-labs/inventory/
-
-mvn clean package -DskipTests
+mvn clean -f $CHE_PROJECTS_ROOT/cloud-native-workshop-v2m3-labs/inventory package -DskipTests
 
 oc new-app -e POSTGRESQL_USER=inventory \
   -e POSTGRESQL_PASSWORD=mysecretpassword \
@@ -31,5 +29,5 @@ if [ ! -z $DELAY ]
     sleep $DELAY
 fi
 
-oc start-build inventory-quarkus --from-dir=target/binary --follow
+oc start-build inventory-quarkus --from-file $CHE_PROJECTS_ROOT/cloud-native-workshop-v2m3-labs/inventory/target/*-runner.jar --follow
 oc new-app inventory-quarkus -e QUARKUS_PROFILE=prod
