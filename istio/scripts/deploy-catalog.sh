@@ -13,7 +13,7 @@ echo Your username is $USERXX
 echo Deploy Catalog service........
 
 oc project $USERXX-catalog || oc new-project $USERXX-catalog
-oc delete dc,bc,build,svc,route,pod,is --all
+oc delete dc,deployment,bc,build,svc,route,pod,is --all
 
 echo "Waiting 30 seconds to finialize deletion of resources..."
 sleep 30
@@ -27,7 +27,7 @@ oc new-app -e POSTGRESQL_USER=catalog \
              openshift/postgresql:latest \
              --name=catalog-database
 
-oc new-build registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:1.5 --binary --name=catalog-springboot -l app=catalog-springboot
+oc new-build java:8 --binary --name=catalog-springboot -l app=catalog-springboot
 
 if [ ! -z $DELAY ]
   then
