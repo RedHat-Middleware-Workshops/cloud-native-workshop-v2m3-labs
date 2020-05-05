@@ -18,20 +18,17 @@ oc delete dc,deployment,bc,build,svc,route,pod,is --all
 echo "Waiting 30 seconds to finialize deletion of resources..."
 sleep 30
 
-mvn clean -f $CHE_PROJECTS_ROOT/cloud-native-workshop-v2m3-labs/inventory package -DskipTests
-
 oc new-app -e POSTGRESQL_USER=inventory \
   -e POSTGRESQL_PASSWORD=mysecretpassword \
   -e POSTGRESQL_DATABASE=inventory openshift/postgresql:latest \
   --name=inventory-database
 
-oc new-build java:8 --binary --name=inventory-quarkus -l app=inventory-quarkus
+mvn clean package -DskipTests -f $CHE_PROJECTS_ROOT/cloud-native-workshop-v2m3-labs/inventory
 
-if [ ! -z $DELAY ]
-  then
-    echo Delay is $DELAY
-    sleep $DELAY
-fi
+oc delete route inventory
 
-oc start-build inventory-quarkus --from-file $CHE_PROJECTS_ROOT/cloud-native-workshop-v2m3-labs/inventory/target/*-runner.jar --follow
-oc new-app inventory-quarkus -e QUARKUS_PROFILE=prod
+oc label dc/inventory-database app.openshift.io/runtime=postgresql --overwrite && \
+oc label dc/inventory app.kubernetes.io/part-of=inventory --overwrite && \
+oc label dc/inventory-database app.kubernetes.io/part-of=inventory --overwrite && \
+oc annotate dc/inventory app.openshift.io/connects-to=inventory-database --overwrite && \
+oc annotate dc/inventory app.openshift.io/vcs-ref=ocp-4.4 --overwrite
