@@ -27,7 +27,7 @@ oc new-app -e POSTGRESQL_USER=catalog \
              openshift/postgresql:latest \
              --name=catalog-database
 
-oc new-build java:8 --binary --name=catalog-springboot -l app=catalog-springboot
+oc new-build registry.access.redhat.com/ubi8/openjdk-11 --binary --name=catalog-springboot -l app=catalog-springboot
 
 if [ ! -z $DELAY ]
   then
