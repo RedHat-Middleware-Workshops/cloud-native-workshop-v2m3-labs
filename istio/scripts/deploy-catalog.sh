@@ -39,9 +39,9 @@ oc start-build catalog-springboot --from-file $CHE_PROJECTS_ROOT/cloud-native-wo
 oc new-app catalog-springboot -e JAVA_OPTS_APPEND='-Dspring.profiles.active=openshift'
 
 oc label dc/catalog-database app.openshift.io/runtime=postgresql --overwrite && \
-oc label dc/catalog-springboot app.openshift.io/runtime=spring --overwrite && \
-oc label dc/catalog-springboot app.kubernetes.io/part-of=catalog --overwrite && \
+oc label deployment/catalog-springboot app.openshift.io/runtime=spring --overwrite && \
+oc label deployment/catalog-springboot app.kubernetes.io/part-of=catalog --overwrite && \
 oc label dc/catalog-database app.kubernetes.io/part-of=catalog --overwrite && \
-oc annotate dc/catalog-springboot app.openshift.io/connects-to=catalog-database --overwrite && \
-oc annotate dc/catalog-springboot app.openshift.io/vcs-uri=https://github.com/RedHat-Middleware-Workshops/cloud-native-workshop-v2m3-labs.git --overwrite && \
-oc annotate dc/catalog-springboot app.openshift.io/vcs-ref=ocp-4.4 --overwrite
+oc annotate deployment/catalog-springboot app.openshift.io/connects-to=catalog-database --overwrite && \
+oc annotate deployment/catalog-springboot app.openshift.io/vcs-uri=https://github.com/RedHat-Middleware-Workshops/cloud-native-workshop-v2m3-labs.git --overwrite && \
+oc annotate deployment/catalog-springboot app.openshift.io/vcs-ref=ocp-4.4 --overwrite
