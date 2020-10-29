@@ -21,7 +21,7 @@ sleep 30
 sed -i "s/userXX/${USERXX}/g" $CHE_PROJECTS_ROOT/cloud-native-workshop-v2m3-labs/catalog/src/main/resources/application-openshift.properties
 mvn clean install spring-boot:repackage -DskipTests -f $CHE_PROJECTS_ROOT/cloud-native-workshop-v2m3-labs/catalog
 
-oc new-app --as-deployment-config -e POSTGRESQL_USER=catalog \
+oc new-app -e POSTGRESQL_USER=catalog \
              -e POSTGRESQL_PASSWORD=mysecretpassword \
              -e POSTGRESQL_DATABASE=catalog \
              openshift/postgresql:latest \
@@ -36,7 +36,7 @@ if [ ! -z $DELAY ]
 fi
 
 oc start-build catalog-springboot --from-file $CHE_PROJECTS_ROOT/cloud-native-workshop-v2m3-labs/catalog/target/catalog-1.0.0-SNAPSHOT.jar --follow
-oc new-app catalog-springboot --as-deployment-config -e JAVA_OPTS_APPEND='-Dspring.profiles.active=openshift'
+oc new-app catalog-springboot -e JAVA_OPTS_APPEND='-Dspring.profiles.active=openshift'
 
 oc label dc/catalog-database app.openshift.io/runtime=postgresql --overwrite && \
 oc label dc/catalog-springboot app.openshift.io/runtime=spring --overwrite && \
