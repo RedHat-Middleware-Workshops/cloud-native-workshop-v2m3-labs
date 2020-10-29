@@ -4,5 +4,5 @@ These labs provide templates, generated Java codes, empty configuration for each
 The included Java projects and/or installation files are here: 
 
 * Catalog - Spring Boot project
-* Inventory - Quarkus project
+* Inventory - Quarkus project 
 * Istio - Servie Mesh configuration
