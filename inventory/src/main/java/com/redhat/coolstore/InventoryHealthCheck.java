@@ -3,11 +3,11 @@ package com.redhat.coolstore;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import org.eclipse.microprofile.health.Health;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
+import org.eclipse.microprofile.health.Readiness;
 
-@Health
+@Readiness
 @ApplicationScoped
 public class InventoryHealthCheck implements HealthCheck {
 
