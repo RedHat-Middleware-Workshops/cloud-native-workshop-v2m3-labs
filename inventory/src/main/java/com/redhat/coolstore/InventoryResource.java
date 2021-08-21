@@ -16,7 +16,6 @@ import javax.ws.rs.ext.Provider;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 @Path("/services/inventory")
-@ApplicationScoped
 @Produces("application/json")
 @Consumes("application/json")
 public class InventoryResource {

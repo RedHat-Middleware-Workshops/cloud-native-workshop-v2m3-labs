@@ -24,7 +24,7 @@ mvn clean install spring-boot:repackage -DskipTests -f $CHE_PROJECTS_ROOT/cloud-
 oc new-app --as-deployment-config -e POSTGRESQL_USER=catalog \
              -e POSTGRESQL_PASSWORD=mysecretpassword \
              -e POSTGRESQL_DATABASE=catalog \
-             openshift/postgresql:latest \
+             openshift/postgresql:10-el8 \
              --name=catalog-database
 
 oc new-build registry.access.redhat.com/ubi8/openjdk-11 --binary --name=catalog-springboot -l app=catalog-springboot
