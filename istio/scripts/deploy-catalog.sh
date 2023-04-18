@@ -18,8 +18,8 @@ oc delete dc,deployment,bc,build,svc,route,pod,is --all
 echo "Waiting 30 seconds to finialize deletion of resources..."
 sleep 30
 
-sed -i "s/userXX/${USERXX}/g" $CHE_PROJECTS_ROOT/cloud-native-workshop-v2m3-labs/catalog/src/main/resources/application-openshift.properties
-mvn clean install spring-boot:repackage -DskipTests -f $CHE_PROJECTS_ROOT/cloud-native-workshop-v2m3-labs/catalog
+sed -i "s/userXX/${USERXX}/g" $PROJECT_SOURCE/cloud-native-workshop-v2m3-labs/catalog/src/main/resources/application-openshift.properties
+mvn clean install spring-boot:repackage -DskipTests -f $PROJECT_SOURCE/cloud-native-workshop-v2m3-labs/catalog
 
 oc new-app --as-deployment-config -e POSTGRESQL_USER=catalog \
              -e POSTGRESQL_PASSWORD=mysecretpassword \
@@ -27,7 +27,7 @@ oc new-app --as-deployment-config -e POSTGRESQL_USER=catalog \
              openshift/postgresql:10-el8 \
              --name=catalog-database
 
-oc new-build registry.access.redhat.com/ubi8/openjdk-11 --binary --name=catalog-springboot -l app=catalog-springboot
+oc new-build registry.access.redhat.com/ubi8/openjdk-17:1.14 --binary --name=catalog-springboot -l app=catalog-springboot
 
 if [ ! -z $DELAY ]
   then
@@ -35,7 +35,7 @@ if [ ! -z $DELAY ]
     sleep $DELAY
 fi
 
-oc start-build catalog-springboot --from-file $CHE_PROJECTS_ROOT/cloud-native-workshop-v2m3-labs/catalog/target/catalog-1.0.0-SNAPSHOT.jar --follow
+oc start-build catalog-springboot --from-file $PROJECT_SOURCE/cloud-native-workshop-v2m3-labs/catalog/target/catalog-1.0.0-SNAPSHOT.jar --follow
 oc new-app catalog-springboot --as-deployment-config -e JAVA_OPTS_APPEND='-Dspring.profiles.active=openshift'
 
 oc label dc/catalog-database app.openshift.io/runtime=postgresql --overwrite && \
@@ -44,4 +44,4 @@ oc label dc/catalog-springboot app.kubernetes.io/part-of=catalog --overwrite && 
 oc label dc/catalog-database app.kubernetes.io/part-of=catalog --overwrite && \
 oc annotate dc/catalog-springboot app.openshift.io/connects-to=catalog-database --overwrite && \
 oc annotate dc/catalog-springboot app.openshift.io/vcs-uri=https://github.com/RedHat-Middleware-Workshops/cloud-native-workshop-v2m3-labs.git --overwrite && \
-oc annotate dc/catalog-springboot app.openshift.io/vcs-ref=ocp-4.10 --overwrite
+oc annotate dc/catalog-springboot app.openshift.io/vcs-ref=ocp-4.12 --overwrite
