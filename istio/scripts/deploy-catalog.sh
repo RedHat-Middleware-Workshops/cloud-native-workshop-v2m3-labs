@@ -18,8 +18,8 @@ oc delete dc,deployment,bc,build,svc,route,pod,is --all
 echo "Waiting 30 seconds to finialize deletion of resources..."
 sleep 30
 
-sed -i "s/userXX/${USERXX}/g" $PROJECT_SOURCE/cloud-native-workshop-v2m3-labs/catalog/src/main/resources/application-openshift.properties
-mvn clean install spring-boot:repackage -DskipTests -f $PROJECT_SOURCE/cloud-native-workshop-v2m3-labs/catalog
+sed -i "s/userXX/${USERXX}/g" $PROJECT_SOURCE/catalog/src/main/resources/application-openshift.properties
+mvn clean install spring-boot:repackage -DskipTests -f $PROJECT_SOURCE/catalog
 
 oc new-app --as-deployment-config -e POSTGRESQL_USER=catalog \
              -e POSTGRESQL_PASSWORD=mysecretpassword \
@@ -35,7 +35,7 @@ if [ ! -z $DELAY ]
     sleep $DELAY
 fi
 
-oc start-build catalog-springboot --from-file $PROJECT_SOURCE/cloud-native-workshop-v2m3-labs/catalog/target/catalog-1.0.0-SNAPSHOT.jar --follow
+oc start-build catalog-springboot --from-file $PROJECT_SOURCE/catalog/target/catalog-1.0.0-SNAPSHOT.jar --follow
 oc new-app catalog-springboot --as-deployment-config -e JAVA_OPTS_APPEND='-Dspring.profiles.active=openshift'
 
 oc label dc/catalog-database app.openshift.io/runtime=postgresql --overwrite && \

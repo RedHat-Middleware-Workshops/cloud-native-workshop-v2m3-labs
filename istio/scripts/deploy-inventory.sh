@@ -23,7 +23,7 @@ oc new-app --as-deployment-config -e POSTGRESQL_USER=inventory \
   -e POSTGRESQL_DATABASE=inventory openshift/postgresql:10-el8 \
   --name=inventory-database
 
-mvn clean package -DskipTests -f $PROJECT_SOURCE/cloud-native-workshop-v2m3-labs/inventory
+mvn clean package -DskipTests -f $PROJECT_SOURCE/inventory
 
 oc delete route inventory
 
