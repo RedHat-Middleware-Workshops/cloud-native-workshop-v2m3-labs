@@ -1,4 +1,4 @@
-# Copyright 2017 Istio Authors
+# Copyright Istio Authors
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -11,6 +11,20 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
+
+##################################################################################################
+# This file defines the services, service accounts, and deployments for the Bookinfo sample.
+#
+# To apply all 4 Bookinfo services, their corresponding service accounts, and deployments:
+#
+#   kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+#
+# Alternatively, you can deploy any resource separately:
+#
+#   kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml -l service=reviews # reviews Service
+#   kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml -l account=reviews # reviews ServiceAccount
+#   kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml -l app=reviews,version=v3 # reviews-v3 Deployment
+##################################################################################################
 
 ##################################################################################################
 # Details service
@@ -28,6 +42,13 @@ spec:
     name: http
   selector:
     app: details
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bookinfo-details
+  labels:
+    account: details
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -50,9 +71,10 @@ spec:
         app: details
         version: v1
     spec:
+      serviceAccountName: bookinfo-details
       containers:
       - name: details
-        image: quay.io/openshiftlabs/ccn-bookinfo-details-v1:0.12.0
+        image: quay.io/openshiftlabs/ccn-bookinfo-details-v1:2.3.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
@@ -73,6 +95,13 @@ spec:
     name: http
   selector:
     app: ratings
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bookinfo-ratings
+  labels:
+    account: ratings
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -95,17 +124,13 @@ spec:
         app: ratings
         version: v1
     spec:
+      serviceAccountName: bookinfo-ratings
       containers:
       - name: ratings
-        image: quay.io/openshiftlabs/ccn-bookinfo-ratings-v1:0.12.0
+        image: quay.io/openshiftlabs/ccn-bookinfo-ratings-v1:2.3.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: bookinfo-reviews
 ---
 ##################################################################################################
 # Reviews service
@@ -123,6 +148,13 @@ spec:
     name: http
   selector:
     app: reviews
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bookinfo-reviews
+  labels:
+    account: reviews
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -145,12 +177,26 @@ spec:
         app: reviews
         version: v1
     spec:
+      serviceAccountName: bookinfo-reviews
       containers:
       - name: reviews
-        image: quay.io/openshiftlabs/ccn-bookinfo-reviews-v1:0.12.0
+        image: quay.io/openshiftlabs/ccn-bookinfo-reviews-v1:2.3.0
         imagePullPolicy: IfNotPresent
+        env:
+        - name: LOG_DIR
+          value: "/tmp/logs"
         ports:
         - containerPort: 9080
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: wlp-output
+          mountPath: /opt/ibm/wlp/output
+      volumes:
+      - name: wlp-output
+        emptyDir: {}
+      - name: tmp
+        emptyDir: {}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -176,10 +222,23 @@ spec:
       serviceAccountName: bookinfo-reviews
       containers:
       - name: reviews
-        image: quay.io/openshiftlabs/ccn-bookinfo-reviews-v2:0.12.0
+        image: quay.io/openshiftlabs/ccn-bookinfo-reviews-v2:2.3.0
         imagePullPolicy: IfNotPresent
+        env:
+        - name: LOG_DIR
+          value: "/tmp/logs"
         ports:
         - containerPort: 9080
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: wlp-output
+          mountPath: /opt/ibm/wlp/output
+      volumes:
+      - name: wlp-output
+        emptyDir: {}
+      - name: tmp
+        emptyDir: {}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -205,15 +264,23 @@ spec:
       serviceAccountName: bookinfo-reviews
       containers:
       - name: reviews
-        image: quay.io/openshiftlabs/ccn-bookinfo-reviews-v3:0.12.0
+        image: quay.io/openshiftlabs/ccn-bookinfo-reviews-v3:2.3.0
         imagePullPolicy: IfNotPresent
+        env:
+        - name: LOG_DIR
+          value: "/tmp/logs"
         ports:
         - containerPort: 9080
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: bookinfo-productpage
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: wlp-output
+          mountPath: /opt/ibm/wlp/output
+      volumes:
+      - name: wlp-output
+        emptyDir: {}
+      - name: tmp
+        emptyDir: {}
 ---
 ##################################################################################################
 # Productpage services
@@ -231,6 +298,13 @@ spec:
     name: http
   selector:
     app: productpage
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bookinfo-productpage
+  labels:
+    account: productpage
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -256,8 +330,14 @@ spec:
       serviceAccountName: bookinfo-productpage
       containers:
       - name: productpage
-        image: quay.io/openshiftlabs/ccn-bookinfo-productpage-v1:0.12.0
+        image: quay.io/openshiftlabs/ccn-bookinfo-productpage-v1:2.3.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+      volumes:
+      - name: tmp
+        emptyDir: {}
 ---
