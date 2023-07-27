@@ -18,8 +18,7 @@ oc delete dc,deployment,bc,build,svc,route,pod,is --all
 echo "Waiting 30 seconds to finialize deletion of resources..."
 sleep 30
 
-sed -i "s/userXX/${USERXX}/g" $PROJECT_SOURCE/catalog/src/main/resources/application-openshift.properties
-mvn clean install spring-boot:repackage -DskipTests -f $PROJECT_SOURCE/catalog
+sed -i "s/userXX/${USERXX}/g" $PROJECT_SOURCE/catalog/src/main/resources/application.properties
 
 oc new-app --as-deployment-config -e POSTGRESQL_USER=catalog \
              -e POSTGRESQL_PASSWORD=mysecretpassword \
@@ -28,9 +27,6 @@ oc new-app --as-deployment-config -e POSTGRESQL_USER=catalog \
              --name=catalog-database
 
 mvn clean install -Ddekorate.deploy=true -DskipTests -f $PROJECT_SOURCE/catalog
-
-REPLACEURL=$(oc get route -n $USERXX-catalog catalog-springboot -o jsonpath="{.spec.host}")
-sed -i "s/REPLACEURL/${REPLACEURL}/g" $PROJECT_SOURCE/monolith/src/main/webapp/app/services/catalog.js
 
 oc label dc/catalog-database app.openshift.io/runtime=postgresql --overwrite && \
 oc label dc/catalog-springboot app.openshift.io/runtime=spring-boot --overwrite && \
