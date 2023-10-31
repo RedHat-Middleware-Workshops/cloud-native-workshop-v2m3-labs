@@ -9,4 +9,4 @@ The included Java projects and/or installation files are here:
 * Inventory - Quarkus project 
 * Istio - Servie Mesh configuration
 
-OpenShift version - 4.13
+OpenShift version - 4.14
