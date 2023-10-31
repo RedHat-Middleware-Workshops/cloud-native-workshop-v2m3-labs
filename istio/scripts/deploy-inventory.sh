@@ -25,7 +25,7 @@ oc new-app --as-deployment-config -e POSTGRESQL_USER=inventory \
 
 mvn clean package -DskipTests -f $PROJECT_SOURCE/inventory
 
-oc delete route inventory 
+oc delete route inventory
 
 oc label dc/inventory-database app.openshift.io/runtime=postgresql --overwrite && \
 oc label dc/inventory app.kubernetes.io/part-of=inventory --overwrite && \
